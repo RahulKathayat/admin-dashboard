@@ -220,7 +220,7 @@ const Page = () => {
                 <Typography variant="h4">
                   Customers
                 </Typography>
-                <Stack
+                {/* <Stack
                   alignItems="center"
                   direction="row"
                   spacing={1}
@@ -245,7 +245,7 @@ const Page = () => {
                   >
                     Export
                   </Button>
-                </Stack>
+                </Stack> */}
               </Stack>
               <div>
                 <Button
@@ -256,7 +256,7 @@ const Page = () => {
                   )}
                   variant="contained"
                 >
-                  Add
+                  Add User
                 </Button>
               </div>
             </Stack>

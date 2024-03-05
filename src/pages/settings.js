@@ -3,33 +3,15 @@ import { Box, Container, Stack, Typography } from '@mui/material';
 import { SettingsNotifications } from 'src/sections/settings/settings-notifications';
 import { SettingsPassword } from 'src/sections/settings/settings-password';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-
-const Page = () => (
-  <>
-    <Head>
-      <title>
-        Settings | Devias Kit
-      </title>
-    </Head>
-    <Box
-      component="main"
-      sx={{
-        flexGrow: 1,
-        py: 8
-      }}
-    >
-      <Container maxWidth="lg">
-        <Stack spacing={3}>
-          <Typography variant="h4">
-            Settings
-          </Typography>
-          <SettingsNotifications />
-          <SettingsPassword />
-        </Stack>
-      </Container>
-    </Box>
-  </>
-);
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+const Page = () => {
+  const router = useRouter();
+  useEffect(()=>{
+    router.push('/auth/login');
+  },[]);
+  return null;
+};
 
 Page.getLayout = (page) => (
   <DashboardLayout>
