@@ -23,16 +23,16 @@ export const OverviewTasksProgress = (props) => {
           justifyContent="space-between"
           spacing={3}
         >
-          <Stack spacing={1}>
+          <Stack spacing={3}>
             <Typography
               color="text.secondary"
               gutterBottom
               variant="overline"
             >
-              Task Progress
+              Active Subscription
             </Typography>
             <Typography variant="h4">
-              {value}%
+              {value}
             </Typography>
           </Stack>
           <Avatar
@@ -47,12 +47,6 @@ export const OverviewTasksProgress = (props) => {
             </SvgIcon>
           </Avatar>
         </Stack>
-        <Box sx={{ mt: 3 }}>
-          <LinearProgress
-            value={value}
-            variant="determinate"
-          />
-        </Box>
       </CardContent>
     </Card>
   );

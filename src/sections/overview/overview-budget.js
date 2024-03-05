@@ -16,12 +16,12 @@ export const OverviewBudget = (props) => {
           justifyContent="space-between"
           spacing={3}
         >
-          <Stack spacing={1}>
+          <Stack spacing={0}>
             <Typography
               color="text.secondary"
               variant="overline"
             >
-              Budget
+              User based on the plans
             </Typography>
             <Typography variant="h4">
               {value}
@@ -39,7 +39,7 @@ export const OverviewBudget = (props) => {
             </SvgIcon>
           </Avatar>
         </Stack>
-        {difference && (
+        {/* {difference && (
           <Stack
             alignItems="center"
             direction="row"
@@ -71,7 +71,7 @@ export const OverviewBudget = (props) => {
               Since last month
             </Typography>
           </Stack>
-        )}
+        )} */}
       </CardContent>
     </Card>
   );

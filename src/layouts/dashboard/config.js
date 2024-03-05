@@ -10,7 +10,7 @@ import { SvgIcon } from '@mui/material';
 
 export const items = [
   {
-    title: 'Overview',
+    title: 'Dashboard',
     path: '/',
     icon: (
       <SvgIcon fontSize="small">
@@ -19,7 +19,7 @@ export const items = [
     )
   },
   {
-    title: 'Customers',
+    title: 'User List',
     path: '/customers',
     icon: (
       <SvgIcon fontSize="small">
@@ -28,7 +28,7 @@ export const items = [
     )
   },
   {
-    title: 'Companies',
+    title: 'Subscription Master',
     path: '/companies',
     icon: (
       <SvgIcon fontSize="small">
@@ -37,7 +37,7 @@ export const items = [
     )
   },
   {
-    title: 'Account',
+    title: 'Profile',
     path: '/account',
     icon: (
       <SvgIcon fontSize="small">
@@ -46,7 +46,7 @@ export const items = [
     )
   },
   {
-    title: 'Settings',
+    title: 'Logout',
     path: '/settings',
     icon: (
       <SvgIcon fontSize="small">
@@ -54,31 +54,4 @@ export const items = [
       </SvgIcon>
     )
   },
-  {
-    title: 'Login',
-    path: '/auth/login',
-    icon: (
-      <SvgIcon fontSize="small">
-        <LockClosedIcon />
-      </SvgIcon>
-    )
-  },
-  {
-    title: 'Register',
-    path: '/auth/register',
-    icon: (
-      <SvgIcon fontSize="small">
-        <UserPlusIcon />
-      </SvgIcon>
-    )
-  },
-  {
-    title: 'Error',
-    path: '/404',
-    icon: (
-      <SvgIcon fontSize="small">
-        <XCircleIcon />
-      </SvgIcon>
-    )
-  }
 ];
