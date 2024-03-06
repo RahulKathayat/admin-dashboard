@@ -10,7 +10,7 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { CustomersTable } from 'src/sections/customer/customers-table';
 import { CustomersSearch } from 'src/sections/customer/customers-search';
 import { applyPagination } from 'src/utils/apply-pagination';
-
+import { useRouter } from 'next/router';
 const now = new Date();
 
 const data = [
@@ -180,7 +180,7 @@ const Page = () => {
   const customers = useCustomers(page, rowsPerPage);
   const customersIds = useCustomerIds(customers);
   const customersSelection = useSelection(customersIds);
-
+  const router = useRouter();
   const handlePageChange = useCallback(
     (event, value) => {
       setPage(value);
@@ -220,35 +220,10 @@ const Page = () => {
                 <Typography variant="h4">
                   Customers
                 </Typography>
-                {/* <Stack
-                  alignItems="center"
-                  direction="row"
-                  spacing={1}
-                >
-                  <Button
-                    color="inherit"
-                    startIcon={(
-                      <SvgIcon fontSize="small">
-                        <ArrowUpOnSquareIcon />
-                      </SvgIcon>
-                    )}
-                  >
-                    Import
-                  </Button>
-                  <Button
-                    color="inherit"
-                    startIcon={(
-                      <SvgIcon fontSize="small">
-                        <ArrowDownOnSquareIcon />
-                      </SvgIcon>
-                    )}
-                  >
-                    Export
-                  </Button>
-                </Stack> */}
               </Stack>
               <div>
                 <Button
+                onClick={()=>router.push('/adduser')}
                   startIcon={(
                     <SvgIcon fontSize="small">
                       <PlusIcon />
