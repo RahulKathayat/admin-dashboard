@@ -29,7 +29,7 @@ export const items = [
   },
   {
     title: 'Subscription Master',
-    path: '/companies',
+    path: '/subscription',
     icon: (
       <SvgIcon fontSize="small">
         <ShoppingBagIcon />
