@@ -4,12 +4,13 @@ import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
-import { useAuth } from 'src/hooks/use-auth';
+// import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
+import axios from 'axios';
 
 const Page = () => {
   const router = useRouter();
-  const auth = useAuth();
+  // const auth = useAuth();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -31,11 +32,31 @@ const Page = () => {
         .string()
         .max(255)
         .required('Password is required')
+        .matches(/[A-Z]/, 'At least one Uppercase letter')
+        .matches(/[!@#$%^&*(),.?":{}|<>]/, 'At least one special character')
+        .matches(/\d/, 'At least one number')
+        .min(8, 'Must be at least 8 characters'),
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await auth.signUp(values.email, values.name, values.password);
-        router.push('/');
+        // await auth.signUp(values.email, values.name, values.password);
+        console.log('signUp clicked');
+        await axios
+            .post(`${process.env.NEXT_PUBLIC_BASE_URL}/v1/admin/register`, values)
+            .then((response) => {
+              console.log(response);
+              formik.resetForm();
+              alert(
+                "You have been registered successfully"
+              );
+              router.push('/auth/login');
+            })
+            .catch((error) => {
+              console.log("Error registering the user ", error);
+              alert(
+                "Registration Failed an error occured while registering"
+              );
+            });
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });

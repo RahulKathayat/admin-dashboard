@@ -16,17 +16,17 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import { useAuth } from 'src/hooks/use-auth';
+// import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
-
+import axios from 'axios';
 const Page = () => {
   const router = useRouter();
-  const auth = useAuth();
+  // const auth = useAuth();
   const [method, setMethod] = useState('email');
   const formik = useFormik({
     initialValues: {
-      email: 'demo@devias.io',
-      password: 'Password123!',
+      email: '',
+      password: '',
       submit: null
     },
     validationSchema: Yup.object({
@@ -42,8 +42,26 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await auth.signIn(values.email, values.password);
-        router.push('/');
+        // await auth.signIn(values.email, values.password);
+          console.log(values);
+          const user = {email: values.email, password: values.password}
+          await axios
+          .post(`${process.env.NEXT_PUBLIC_BASE_URL}/v1/admin/login`, user)
+          .then((response) => {
+            console.log(response);
+            window.sessionStorage.setItem('authenticated', 'true');
+            const refreshToken = response.data.tokens.refresh.token;
+            const accessToken = response.data.tokens.access.token;
+            localStorage.setItem("refreshTok", refreshToken);
+            localStorage.setItem("accessTok", accessToken);
+            alert('logged in successfully');
+            router.push('/');
+          })
+          .catch((e) => {
+            console.log(e);
+            alert( 'Invalid email or password');
+            console.log("Invalid email or password");
+          });
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -64,7 +82,7 @@ const Page = () => {
       auth.skip();
       router.push('/');
     },
-    [auth, router]
+    // [auth, router]
   );
 
   return (
