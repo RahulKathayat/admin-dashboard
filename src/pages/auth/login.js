@@ -154,14 +154,14 @@ const Page = () => {
               >
                 <Stack spacing={3}>
                   <TextField
-                    error={!!(formik.touched.email && formik.errors.email)}
                     fullWidth
-                    helperText={formik.touched.email && formik.errors.email}
                     label="Email Address"
                     name="email"
+                    type="email"
+                    error={!!(formik.touched.email && formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
-                    type="email"
                     value={formik.values.email}
                   />
                   <TextField

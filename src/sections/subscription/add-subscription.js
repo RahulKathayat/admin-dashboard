@@ -10,6 +10,9 @@ import {
   TextField,
   Unstable_Grid2 as Grid
 } from '@mui/material';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import axios from 'axios';
 
 const states = [
   {
@@ -27,36 +30,62 @@ const states = [
 ];
 
 export const AddSubscription = () => {
-  const [values, setValues] = useState({
-    title:'',
-    description:'',
-    pricing:'',
-    state: '',
-    features:'',
+  const formikAddSubscription = useFormik({
+    initialValues: {
+      title: '',
+      description: '',
+      pricing: '',
+      state: '',
+      features: '',
+      submit: null
+    },
+    validationSchema: Yup.object({
+      title: Yup
+        .string()
+        .max(255)
+        .required('Title is required'),
+      description: Yup
+        .string()
+        .max(255)
+        .required('Description is required'),
+      pricing: Yup
+        .number()
+        .max(255)
+        .required('Pricing is required'),
+      state: Yup
+        .string()
+        .max(255)
+        .required('Type is required'),
+      features: Yup
+        .string()
+        .max(255)
+        // .required('Features is required'),
+    }),
+    onSubmit: async (values, helpers) => {
+      try {
+          console.log(values);
+          const subscription = {title:values.title,description:values.description,pricing:values.pricing,type:values.state,features:values.features,status:true};
+          const res=await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/v1/admin/addSubscription`,subscription).then((res)=>{
+            console.log(res);
+            alert("Successfully added subscription");
+            formikAddSubscription.resetForm();
+          })
+          .catch((err)=>{
+            console.log(err);
+            alert("Error while adding subscription");
+          });
+      } catch (err) {
+        helpers.setStatus({ success: false });
+        helpers.setErrors({ submit: err.message });
+        helpers.setSubmitting(false);
+      }
+    }
   });
-
-  const handleChange = useCallback(
-    (event) => {
-      setValues((prevState) => ({
-        ...prevState,
-        [event.target.name]: event.target.value
-      }));
-    },
-    []
-  );
-
-  const handleSubmit = useCallback(
-    (event) => {
-      event.preventDefault();
-    },
-    []
-  );
-
   return (
     <form
       autoComplete="off"
       noValidate
-      onSubmit={handleSubmit}
+      onSubmit={formikAddSubscription.handleSubmit}
     >
       <Card>
         <CardHeader
@@ -76,9 +105,11 @@ export const AddSubscription = () => {
                   fullWidth
                   label="Title"
                   name="title"
-                  onChange={handleChange}
-                  required
-                  value={values.title}
+                  error={!!(formikAddSubscription.touched.title && formikAddSubscription.errors.title)}
+                  helperText={formikAddSubscription.touched.title && formikAddSubscription.errors.title}
+                  onBlur={formikAddSubscription.handleBlur}
+                  onChange={formikAddSubscription.handleChange}
+                  value={formikAddSubscription.values.title}
                 />
               </Grid>
               <Grid
@@ -89,9 +120,11 @@ export const AddSubscription = () => {
                   fullWidth
                   label="Description"
                   name="description"
-                  onChange={handleChange}
-                  required
-                  value={values.description}
+                  error={!!(formikAddSubscription.touched.description && formikAddSubscription.errors.description)}
+                  helperText={formikAddSubscription.touched.description && formikAddSubscription.errors.description}
+                  onBlur={formikAddSubscription.handleBlur}
+                  onChange={formikAddSubscription.handleChange}
+                  value={formikAddSubscription.values.description}
                 />
               </Grid>
               <Grid
@@ -102,9 +135,11 @@ export const AddSubscription = () => {
                   fullWidth
                   label="Features"
                   name="features"
-                  onChange={handleChange}
-                  required
-                  value={values.features}
+                  error={!!(formikAddSubscription.touched.features && formikAddSubscription.errors.features)}
+                  helperText={formikAddSubscription.touched.features && formikAddSubscription.errors.features}
+                  onBlur={formikAddSubscription.handleBlur}
+                  onChange={formikAddSubscription.handleChange}
+                  value={formikAddSubscription.values.features}
                 />
               </Grid>
               <Grid
@@ -115,9 +150,11 @@ export const AddSubscription = () => {
                   fullWidth
                   label="Pricing"
                   name="pricing"
-                  onChange={handleChange}
-                  type="number"
-                  value={values.pricing}
+                  error={!!(formikAddSubscription.touched.pricing && formikAddSubscription.errors.pricing)}
+                  helperText={formikAddSubscription.touched.pricing && formikAddSubscription.errors.pricing}
+                  onBlur={formikAddSubscription.handleBlur}
+                  onChange={formikAddSubscription.handleChange}
+                  value={formikAddSubscription.values.pricing}
                 />
               </Grid>
               <Grid
@@ -128,11 +165,14 @@ export const AddSubscription = () => {
                   fullWidth
                   label="Select Type"
                   name="state"
-                  onChange={handleChange}
                   required
                   select
                   SelectProps={{ native: true }}
-                  value={values.state}
+                  error={!!(formikAddSubscription.touched.state && formikAddSubscription.errors.state)}
+                  helperText={formikAddSubscription.touched.state && formikAddSubscription.errors.state}
+                  onBlur={formikAddSubscription.handleBlur}
+                  onChange={formikAddSubscription.handleChange}
+                  value={formikAddSubscription.values.state}
                 >
                   {states.map((option) => (
                     <option
@@ -148,8 +188,17 @@ export const AddSubscription = () => {
           </Box>
         </CardContent>
         <Divider />
+        {formikAddSubscription.errors.submit && (
+          <Typography
+            color="error"
+            sx={{ mt: 3 }}
+            variant="body2"
+          >
+            {formikAddSubscription.errors.submit}
+          </Typography>
+        )}
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">
+          <Button variant="contained" type='submit'>
            Save details
           </Button>
         </CardActions>

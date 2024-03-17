@@ -16,6 +16,8 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { CompanyCard } from 'src/sections/companies/company-card';
 import { CompaniesSearch } from 'src/sections/companies/companies-search';
 import { useRouter } from 'next/router';
+import { useEffect,useState } from 'react';
+import axios from 'axios';
 const companies = [
   {
     id: '2569ce0d517a7f06d3ea1f24',
@@ -41,6 +43,21 @@ const companies = [
 
 const Page = () => {
     const router = useRouter();
+    const [subscription,setSubscription] = useState([]);
+    useEffect( ()=> {
+      const handleFetch = async ()=>{
+        try{
+          const data = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/v1/admin/fetchSubscription`);
+          // console.log(data.data.data);
+          setSubscription(data.data.data);
+          console.log("here is subscription listss:",data.data.data);
+        }
+        catch(e){
+          console.log(e,"error fetching subscriptions");
+        }
+      };
+      handleFetch();
+    },[]);
     return (
       <>
         <Head>
@@ -86,14 +103,14 @@ const Page = () => {
                 container
                 spacing={3}
               >
-                {companies.map((company) => (
+                {subscription.map((company) => (
                   <Grid
                     xs={12}
                     md={6}
                     lg={4}
                     key={company.id}
                   >
-                    <CompanyCard company={company} />
+                    <CompanyCard company={company} subscription={subscription} setSubscription = {setSubscription} />
                   </Grid>
                 ))}
               </Grid>
