@@ -16,7 +16,7 @@ export const OverviewTotalCustomers = (props) => {
           justifyContent="space-between"
           spacing={3}
         >
-          <Stack spacing={3}>
+          <Stack spacing={6}>
             <Typography
               color="text.secondary"
               variant="overline"

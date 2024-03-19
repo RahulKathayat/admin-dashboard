@@ -52,7 +52,8 @@ export const SideNav = (props) => {
               width: 32
             }}
           >
-            <Logo />
+            {/* <Logo /> */}
+            <img src='/assets/logos/whitelogo.png' style={{transform:"scale(1.2)"}}/>
           </Box>
           <Box
             sx={{

@@ -16,7 +16,7 @@ export const OverviewBudget = (props) => {
           justifyContent="space-between"
           spacing={3}
         >
-          <Stack spacing={0}>
+          <Stack spacing={3}>
             <Typography
               color="text.secondary"
               variant="overline"
