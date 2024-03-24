@@ -53,7 +53,7 @@ export const SideNav = (props) => {
             }}
           >
             {/* <Logo /> */}
-            <img src='/assets/logos/whitelogo.png' style={{transform:"scale(1.2)"}}/>
+            <img src='/assets/logos/swapwhitelogo.png' style={{transform:"scale(1.2)"}}/>
           </Box>
           <Box
             sx={{
