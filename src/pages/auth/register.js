@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
 // import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
+import toast from 'react-hot-toast';
 import axios from 'axios';
 
 const Page = () => {
@@ -40,24 +41,24 @@ const Page = () => {
     onSubmit: async (values, helpers) => {
       try {
         // await auth.signUp(values.email, values.name, values.password);
-        console.log('signUp clicked');
+        toast.loading('Registering...');
         await axios
             .post(`${process.env.NEXT_PUBLIC_BASE_URL}/v1/admin/register`, values)
             .then((response) => {
               console.log(response);
               formik.resetForm();
-              alert(
-                "You have been registered successfully"
-              );
+              toast.dismiss();
+              toast.success('Registered successfully');
               router.push('/auth/login');
             })
             .catch((error) => {
               console.log("Error registering the user ", error);
-              alert(
-                "Registration Failed an error occured while registering"
-              );
+              toast.dismiss();
+              toast.error('Error Occured');
             });
       } catch (err) {
+        toast.dismiss();
+        toast.error('Error Occured');
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);

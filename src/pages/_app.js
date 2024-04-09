@@ -7,6 +7,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { AuthConsumer, AuthProvider } from 'src/contexts/auth-context';
 import { useNProgress } from 'src/hooks/use-nprogress';
 import { createTheme } from 'src/theme';
+import { Toaster } from 'react-hot-toast';
 import { createEmotionCache } from 'src/utils/create-emotion-cache';
 import 'simplebar-react/dist/simplebar.min.css';
 
@@ -38,6 +39,7 @@ const App = (props) => {
         <AuthProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
+            <Toaster />
             <AuthConsumer>
               {
                 (auth) => auth.isLoading

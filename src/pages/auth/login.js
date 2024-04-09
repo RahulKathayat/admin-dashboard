@@ -4,6 +4,7 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import toast from 'react-hot-toast';
 import {
   Alert,
   Box,
@@ -42,6 +43,7 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
+          toast.loading('Signing in...');
           await auth.signIn(values.email, values.password);
           console.log(values);
           const user = {email: values.email, password: values.password}
@@ -54,15 +56,19 @@ const Page = () => {
             const accessToken = response.data.tokens.access.token;
             localStorage.setItem("refreshTok", refreshToken);
             localStorage.setItem("accessTok", accessToken);
-            alert('logged in successfully');
+            toast.dismiss();
+            toast.success('Signed in');
             router.push('/');
           })
           .catch((e) => {
             console.log(e);
-            alert( 'Invalid email or password');
+            toast.dismiss();
+            toast.error('Invalid credentials');
             console.log("Invalid email or password");
           });
-      } catch (err) {
+        } catch (err) {
+        toast.dismiss();
+        toast.error('Invalid credentials');
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);

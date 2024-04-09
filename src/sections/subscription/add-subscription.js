@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import toast from 'react-hot-toast';
 import axios from 'axios';
 
 const states = [
@@ -64,18 +65,23 @@ export const AddSubscription = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
+          toast.loading('Adding Subscription');
           console.log(values);
           const subscription = {title:values.title,description:values.description,pricing:values.pricing,type:values.state,features:values.features,status:true};
-          const res=await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/v1/admin/addSubscription`,subscription).then((res)=>{
+          await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/v1/admin/addSubscription`,subscription).then((res)=>{
             console.log(res);
-            alert("Successfully added subscription");
+            toast.dismiss();
+            toast.success('Subscription added');
             formikAddSubscription.resetForm();
           })
           .catch((err)=>{
             console.log(err);
-            alert("Error while adding subscription");
+            toast.dismiss();
+            toast.error('Error Occured');
           });
-      } catch (err) {
+        } catch (err) {
+        toast.dismiss();
+        toast.error('Error Occured');
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);

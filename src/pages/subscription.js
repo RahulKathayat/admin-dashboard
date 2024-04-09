@@ -18,6 +18,7 @@ import { CompaniesSearch } from 'src/sections/companies/companies-search';
 import { useRouter } from 'next/router';
 import { useEffect,useState } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 const companies = [
   {
     id: '2569ce0d517a7f06d3ea1f24',
@@ -47,12 +48,17 @@ const Page = () => {
     useEffect( ()=> {
       const handleFetch = async ()=>{
         try{
+          toast.loading('Fetching subscriptions');
           const data = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/v1/admin/fetchSubscription`);
           // console.log(data.data.data);
           setSubscription(data.data.data);
           console.log("here is subscription listss:",data.data.data);
+          toast.dismiss();
+          toast.success('Success');
         }
         catch(e){
+          toast.dismiss();
+          toast.error('Error fetching subscriptions');
           console.log(e,"error fetching subscriptions");
         }
       };

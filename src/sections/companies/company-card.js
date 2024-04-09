@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useFormik } from "formik";
+import toast from "react-hot-toast";
 import * as Yup from "yup";
 import axios from "axios";
 
@@ -74,15 +75,20 @@ export const CompanyCard = (props) => {
 
   const handleDeleteSubscription = async () => {
     try {
+      toast.loading("Deleting Subscription");
       const data = { id: company.id };
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/v1/admin/deleteSubscription`,
         data
       );
       console.log(res);
+      toast.dismiss();
+      toast.success("Subscription deleted");
       setSubscription(subscription.filter((obj) => obj.id !== company.id));
       handleCloseDelete();
     } catch (e) {
+      toast.dismiss();
+      toast.error("Error Occured");
       console.log("error deleting subscription", e);
     }
   };
@@ -106,6 +112,7 @@ export const CompanyCard = (props) => {
     }),
     onSubmit: async (values, helpers) => {
       try {
+        toast.loading("Updating Subscription");
         console.log(values);
         const value = {
           id:company.id,
@@ -119,7 +126,8 @@ export const CompanyCard = (props) => {
         await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/v1/admin/updateSubscription`, value)
         .then((res) => {
           console.log(res);
-          alert("Subscription updated successfully");
+          toast.dismiss();
+          toast.success("Subscription updated");
           subscription.forEach(element => {
             if(element.id === company.id){
               // console.log("hiii", element.title);
@@ -133,8 +141,14 @@ export const CompanyCard = (props) => {
           setSubscription(subscription);
           handleCloseUpdate();
         })
-        .catch(err => console.log(err));
+        .catch((err) => {
+          console.log(err)
+          toast.dismiss();
+          toast.error("Error Occured");
+        });
       } catch (err) {
+        toast.dismiss();
+        toast.error("Error Occured");
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
